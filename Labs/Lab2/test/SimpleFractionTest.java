@@ -37,13 +37,16 @@ public class SimpleFractionTest {
 
   @Test
   public void testAdd() {
+    one = new SimpleFraction(1, 1);
+    two = new SimpleFraction(2, 3);
+    three = new SimpleFraction(-3, -2);
     assertEquals("5/3", one.add(two).toString());
     assertEquals("5/2", three.add(one).toString());
     assertEquals("1/2", three.add(-1, 1).toString());
 
     try {
       one.add(-4, 1);
-      fail("no invalid fractions");
+      fail("Did not catch exception");
     }
     catch (IllegalArgumentException e) {
       System.out.println("it works");
@@ -59,9 +62,9 @@ public class SimpleFractionTest {
 
   @Test
   public void testGetDecimalValue() {
-    assertEquals(1.0, this.one.getDecimalValue(1), 0.1);
-    assertEquals(0.667, this.two.getDecimalValue(3), 0.001);
-    assertEquals(1.5, this.three.getDecimalValue(1), 0.1);
+    assertEquals(1.0, one.getDecimalValue(1), 0.1);
+    assertEquals(0.667, two.getDecimalValue(3), 0.001);
+    assertEquals(1.5, three.getDecimalValue(1), 0.1);
   }
 
 }
