@@ -1,8 +1,5 @@
 package cs3500.marblesolitaire.view;
 
-import cs3500.marblesolitaire.model.hw02.MarbleSolitaireModel;
-import cs3500.marblesolitaire.model.hw02.MarbleSolitaireModelState;
-
 /**
  * This interface represents operations that should be offered by
  * a view for the Marble solitaire game.

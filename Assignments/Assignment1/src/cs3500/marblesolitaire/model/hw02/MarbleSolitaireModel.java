@@ -31,5 +31,4 @@ public interface MarbleSolitaireModel extends MarbleSolitaireModelState {
    */
   boolean isGameOver();
 
-
 }
