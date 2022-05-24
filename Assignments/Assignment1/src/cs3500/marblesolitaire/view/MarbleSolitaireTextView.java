@@ -28,23 +28,26 @@ public class MarbleSolitaireTextView implements MarbleSolitaireView {
   @Override
   public String toString() {
     StringBuilder str = new StringBuilder();
+    String current = "";
 
     for (int i = 0; i < this.game.getBoardSize(); i++) {
       for (int j = 0; j < this.game.getBoardSize(); j++) {
         if (this.game.getSlotAt(i, j) == MarbleSolitaireModelState.SlotState.Invalid) {
-          str.append(" ");
+          str.append("  ");
         }
         if (this.game.getSlotAt(i, j) == MarbleSolitaireModelState.SlotState.Marble) {
-          str.append("o");
+          str.append("O ");
         }
         if (this.game.getSlotAt(i, j) == MarbleSolitaireModelState.SlotState.Empty) {
-          str.append("-");
+          str.append("_ ");
         }
       }
       if (i != this.game.getBoardSize() - 1) {
+        current = str.toString().replaceAll("\\s+$", "");
+        str = new StringBuilder(current);
         str.append("\n");
       }
     }
-    return str.toString();
+    return str.toString().replaceAll("\\s+$", "");
   }
 }

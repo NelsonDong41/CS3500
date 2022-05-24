@@ -27,6 +27,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
   /**
    * Constructs a EnglishSolitaireModel with the following parameters.
+   *
    * @param sRow : which row the starting position is on
    * @param sCol : which column the starting position is on
    * @throws IllegalArgumentException : if the starting position is off the board or Invalid
@@ -48,6 +49,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
   /**
    * Constructs a EnglishSolitaireModel with the following parameters.
+   *
    * @param armThickness : how thick the arms are of the game
    * @throws IllegalArgumentException : if the thickness is even
    */
@@ -57,19 +59,20 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
     } else {
       this.board = new ArrayList<>();
       this.armThickness = armThickness;
-      this.starti = 3;
-      this.startj = 3;
+      this.starti = (this.getBoardSize() + 1) / 2 - 1;
+      this.startj = (this.getBoardSize() + 1) / 2 - 1;
       this.initBoard();
     }
   }
 
   /**
    * Constructs a EnglishSolitaireModel with the following parameters.
+   *
    * @param armThickness : how thick the arms are
-   * @param sRow : which row the starting position is on
-   * @param sCol : which column the starting position is on
+   * @param sRow         : which row the starting position is on
+   * @param sCol         : which column the starting position is on
    * @throws IllegalArgumentException : the arm thickness is even or if the starting position
-   *      is out of the board or Invalid
+   *                                  is out of the board or Invalid
    */
   public EnglishSolitaireModel(int armThickness, int sRow, int sCol)
           throws IllegalArgumentException {
@@ -90,7 +93,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
   private void initBoard() {
     for (int i = 0; i < armThickness + 2 * (armThickness - 1); i++) {
-      this.board.add(new ArrayList<>());
+      this.board.add(new ArrayList<SlotState>());
       for (int j = 0; j < armThickness + 2 * (armThickness - 1); j++) {
         if (this.offBoard(i, j)) {
           this.board.get(i).add(SlotState.Invalid);
@@ -105,6 +108,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
   /**
    * Moves a valid piece to a valid position.
+   *
    * @param fromRow the row number of the position to be moved from
    *                (starts at 0)
    * @param fromCol the column number of the position to be moved from
@@ -120,52 +124,60 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
     int movey = fromRow - toRow;
     int movex = fromCol - toCol;
 
-    if ((movex != 0 && movey != 0 && !this.canMove(fromRow, fromCol)) || this.isGameOver()) {
+    if ((movex != 0 && movey != 0)
+            || this.isGameOver()
+            || !this.canMove(fromRow, fromCol)
+            || movex == 0 && movey == 0
+            || Math.abs(movex) == 1
+            || Math.abs(movey) == 1
+            || Math.abs(movex) > 2
+            || Math.abs(movey) > 2
+            || fromCol < 0
+            || toCol < 0
+            || fromRow < 0
+            || toRow < 0
+            || fromCol > this.getBoardSize() - 1
+            || toCol > this.getBoardSize() - 1
+            || fromRow > this.getBoardSize() - 1
+            || toRow > this.getBoardSize() - 1
+            || this.getSlotAt((fromRow + toRow) / 2,
+            (fromCol + toCol) / 2) != SlotState.Marble
+            || this.getSlotAt(toRow, toCol) != SlotState.Empty
+            || this.getSlotAt(fromRow, fromCol) == SlotState.Empty) {
       throw new IllegalArgumentException("Invalid move");
     } else {
-      if (Math.abs(movex) == 2 || Math.abs(movey) == 2
-              && this.canMove(fromRow, fromCol)) {
-        this.board.get(fromRow).set(fromCol, SlotState.Empty);
-        this.board.get((fromRow + toRow)/2).set((fromCol + toCol)/2, SlotState.Empty);
-        this.board.get(toRow).set(toCol, SlotState.Marble);
-      }
-      else if (Math.abs(movex) == 1 || Math.abs(movey) == 1) {
-        throw new IllegalArgumentException("has to jump over a marble");
-      }
+      this.board.get(fromRow).set(fromCol, SlotState.Empty);
+      this.board.get((fromRow + toRow) / 2).set((fromCol + toCol) / 2, SlotState.Empty);
+      this.board.get(toRow).set(toCol, SlotState.Marble);
     }
   }
 
   private boolean canMove(int row, int col) {
-    boolean ans = true;
-    if (row < this.getBoardSize() - 3) {
-      ans = this.getSlotAt(col, row).equals(SlotState.Marble)
-              && this.getSlotAt(row + 1, col).equals(SlotState.Marble)
-              && this.getSlotAt(row + 2, col).equals(SlotState.Marble);
-    }
-    if (row >= 2) {
-      ans = ans || this.getSlotAt(row - 1, col).equals(SlotState.Marble)
-              && this.getSlotAt(row - 2, col).equals(SlotState.Marble);
-    }
-    if (col < this.getBoardSize() - 3) {
-      ans = ans || this.getSlotAt(row, col + 1).equals(SlotState.Marble)
-              && this.getSlotAt(row, col + 2).equals(SlotState.Marble);
-    }
-    if (col >= 3) {
-      ans = ans || this.getSlotAt(row, col - 1).equals(SlotState.Marble)
-              && this.getSlotAt(row, col - 1).equals(SlotState.Marble);
-    }
-    return ans;
+    return this.getSlotAt(row, col) == SlotState.Marble
+            && ((!this.offBoard(row - 2, col)
+            && this.getSlotAt(row - 1, col) == SlotState.Marble
+            && this.getSlotAt(row - 2, col) == SlotState.Empty)
+            || (!this.offBoard(row + 2, col)
+            && this.getSlotAt(row + 1, col) == SlotState.Marble
+            && this.getSlotAt(row + 2, col) == SlotState.Empty)
+            || (!this.offBoard(row, col + 2)
+            && this.getSlotAt(row, col + 1) == SlotState.Marble
+            && this.getSlotAt(row, col + 2) == SlotState.Empty)
+            || (!this.offBoard(row, col - 2)
+            && this.getSlotAt(row, col - 1) == SlotState.Marble
+            && this.getSlotAt(row, col - 2) == SlotState.Empty));
   }
 
   /**
    * determines if the game is over.
+   *
    * @return a boolean. True if the game is over
    */
   @Override
   public boolean isGameOver() {
     for (int i = 0; i < getBoardSize(); i++) {
       for (int j = 0; j < getBoardSize(); j++) {
-        if ((this.getSlotAt(i, j) == SlotState.Marble && this.canMove(j, i))) {
+        if ((this.getSlotAt(i, j) == SlotState.Marble && this.canMove(i, j))) {
           return false;
         }
       }
@@ -175,6 +187,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
   /**
    * gets the longest length/width of the board.
+   *
    * @return : int of the length/width of the board
    */
   @Override
@@ -184,6 +197,7 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
 
   /**
    * returns the type of enum at the given position.
+   *
    * @param row the row of the position sought, starting at 0
    * @param col the column of the position sought, starting at 0
    * @return : a SlotState with the given type at the position
@@ -191,9 +205,9 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
    */
   @Override
   public SlotState getSlotAt(int row, int col) throws IllegalArgumentException {
-    if (row < 0 || row > this.getBoardSize() - 1
+    if (row < 0 || row >= this.getBoardSize()
             || col < 0
-            || col > this.getBoardSize() - 1) {
+            || col >= this.getBoardSize()) {
       throw new IllegalArgumentException();
     }
     return this.board.get(row).get(col);
@@ -203,12 +217,17 @@ public class EnglishSolitaireModel implements MarbleSolitaireModel {
     return ((col < armThickness - 1 && row < armThickness - 1)
             || (col > armThickness * 2 - 2 && row > armThickness * 2 - 2)
             || (col > armThickness * 2 - 2 && row < armThickness - 1)
-            || (col < armThickness - 1 && row > armThickness * 2 - 2));
+            || (col < armThickness - 1 && row > armThickness * 2 - 2))
+            || (row < 0)
+            || (col < 0)
+            || (row > getBoardSize() - 1)
+            || (col > getBoardSize() - 1);
   }
 
   /**
    * returns how many marbles are left on the board.
-   *      @return an int of the number of marbles
+   *
+   * @return an int of the number of marbles
    */
   @Override
   public int getScore() {

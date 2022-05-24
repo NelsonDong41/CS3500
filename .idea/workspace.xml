@@ -2,12 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b8c086d4-e4ab-4253-ace3-ce58e9ae5858" name="Changes" comment="Finish Lab 2">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignments/Assignment1/Assignment1.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignments/Assignment1/src/cs3500/marblesolitaire/model/hw02/EnglishSolitaireModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Assignments/Assignment1/src/cs3500/marblesolitaire/model/hw02/EnglishSolitaireModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignments/Assignment1/src/cs3500/marblesolitaire/view/MarbleSolitaireTextView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Assignments/Assignment1/src/cs3500/marblesolitaire/view/MarbleSolitaireTextView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignments/Assignment1/test/TestEnglishSolitaireModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Assignments/Assignment1/test/TestEnglishSolitaireModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CS3500.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CS3500.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -23,10 +32,15 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/nelso/Documents/GitHub/CS3500/Labs/Lab2",
+    "last_directory_selection": "C:/Users/nelso/Documents/GitHub/CS3500/BooksPersons/src",
+    "last_opened_file_path": "C:/Users/nelso/Documents/GitHub/CS3500/Assignments/Assignment1",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
@@ -45,6 +59,7 @@
       <workItem from="1652320808611" duration="185000" />
       <workItem from="1652321112071" duration="94000" />
       <workItem from="1652321216227" duration="250000" />
+      <workItem from="1652716532327" duration="1392000" />
     </task>
     <servers />
   </component>
@@ -61,5 +76,17 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/Assignments/Assignment1/test/TestEnglishSolitaireModel.java</url>
+          <line>16</line>
+          <properties field="board3" class="TestEnglishSolitaireModel" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
