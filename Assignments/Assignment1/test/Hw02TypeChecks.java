@@ -1,4 +1,5 @@
 import cs3500.marblesolitaire.model.hw02.EnglishSolitaireModel;
+import cs3500.marblesolitaire.view.MarbleSolitaireTextView;
 
 /**
  * Do not modify this file. This file should compile correctly with your code!
