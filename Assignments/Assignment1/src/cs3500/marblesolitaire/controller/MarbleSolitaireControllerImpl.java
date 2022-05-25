@@ -32,16 +32,22 @@ public class MarbleSolitaireControllerImpl implements MarbleSolitaireController 
     while (!model.isGameOver()) {
       toFrom = new ArrayList<>();
       this.showGame();
+
       if (sc.hasNext("q") || sc.hasNext("Q")) {
         this.quit();
         break;
       }
-      this.getFromInput(toFrom);
+      this.getToFrom(toFrom);
+
       if (toFrom.size() != 4 || this.anyNegative(toFrom)) {
         this.invalidMove();
         continue;
       }
-      this.moveModel(toFrom.get(0), toFrom.get(1), toFrom.get(2), toFrom.get(3));
+
+      this.moveModel(toFrom.get(0),
+              toFrom.get(1),
+              toFrom.get(2),
+              toFrom.get(3));
     }
     this.gameOver();
   }
@@ -73,8 +79,8 @@ public class MarbleSolitaireControllerImpl implements MarbleSolitaireController 
     }
   }
 
-  private void getFromInput(ArrayList<Integer> toFrom) {
-    for (int i = 0; i < 4; i++) {
+  private void getToFrom(ArrayList<Integer> toFrom) {
+    for ( int i = 0; i < 4; i++) {
       toFrom.add(sc.nextInt());
     }
   }
