@@ -4,10 +4,7 @@ import java.io.IOException;
 
 import cs3500.marblesolitaire.model.hw02.MarbleSolitaireModelState;
 
-/**
- * a class to view a given game.
- */
-public class MarbleSolitaireTextView implements MarbleSolitaireView {
+public class TriangleSolitaireTextView implements MarbleSolitaireView {
   private final MarbleSolitaireModelState game;
   private final Appendable appendable;
 
@@ -17,7 +14,7 @@ public class MarbleSolitaireTextView implements MarbleSolitaireView {
    * @param game : the game we want to view
    * @throws IllegalArgumentException if the game is null
    */
-  public MarbleSolitaireTextView(MarbleSolitaireModelState game) throws IllegalArgumentException {
+  public TriangleSolitaireTextView(MarbleSolitaireModelState game) throws IllegalArgumentException {
     if (game == null) {
       throw new IllegalArgumentException("game is null");
     } else {
@@ -33,7 +30,7 @@ public class MarbleSolitaireTextView implements MarbleSolitaireView {
    * @param appendable : the output source
    * @throws IllegalArgumentException : if either are null
    */
-  public MarbleSolitaireTextView(MarbleSolitaireModelState game, Appendable appendable)
+  public TriangleSolitaireTextView(MarbleSolitaireModelState game, Appendable appendable)
           throws IllegalArgumentException {
     if (game == null || appendable == null || game.getBoardSize() == 0) {
       throw new IllegalArgumentException("null parameters");
@@ -53,10 +50,8 @@ public class MarbleSolitaireTextView implements MarbleSolitaireView {
     String current = "";
 
     for (int i = 0; i < this.game.getBoardSize(); i++) {
+      str.append(" ".repeat(this.game.getBoardSize() - i - 1));
       for (int j = 0; j < this.game.getBoardSize(); j++) {
-        if (this.game.getSlotAt(i, j) == MarbleSolitaireModelState.SlotState.Invalid) {
-          str.append("  ");
-        }
         if (this.game.getSlotAt(i, j) == MarbleSolitaireModelState.SlotState.Marble) {
           str.append("O ");
         }

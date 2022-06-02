@@ -7,14 +7,25 @@ import java.util.Scanner;
 import cs3500.marblesolitaire.model.hw02.MarbleSolitaireModel;
 import cs3500.marblesolitaire.view.MarbleSolitaireView;
 
+/**
+ * class for the MarbleSolitaireController.
+ */
 public class MarbleSolitaireControllerImpl implements MarbleSolitaireController {
   MarbleSolitaireView view;
   MarbleSolitaireModel model;
   Readable readable;
   Scanner sc;
 
-  public MarbleSolitaireControllerImpl
-          (MarbleSolitaireModel model, MarbleSolitaireView view, Readable readable)
+  /**
+   * constructor for the MarbleSolitaireControllerImpl Object.
+   *
+   * @param model    : the game
+   * @param view     : the view for the game
+   * @param readable : input to the game
+   * @throws IllegalArgumentException : if any of the params are null
+   */
+  public MarbleSolitaireControllerImpl(MarbleSolitaireModel model,
+                                       MarbleSolitaireView view, Readable readable)
           throws IllegalArgumentException {
     if (model == null || view == null || readable == null) {
       throw new IllegalArgumentException("null parameters");
@@ -28,34 +39,51 @@ public class MarbleSolitaireControllerImpl implements MarbleSolitaireController 
   @Override
   public void playGame() throws IllegalStateException {
     ArrayList<Integer> toFrom;
+    ArrayList<Integer> invalids;
+    boolean gameOver = false;
 
     while (!model.isGameOver()) {
       toFrom = new ArrayList<>();
+      invalids = new ArrayList<>();
       this.showGame();
 
-      if (sc.hasNext("q") || sc.hasNext("Q")) {
-        this.quit();
+      while (toFrom.size() < 4) {
+        if (sc.hasNext("q") || sc.hasNext("Q")) {
+          this.quit();
+          gameOver = true;
+          break;
+        } else if (sc.hasNextInt()) {
+          toFrom.add(sc.nextInt() - 1);
+          if (toFrom.get(toFrom.size() - 1) < 0) {
+            invalids.add(toFrom.remove(toFrom.size() - 1));
+            this.invalidInput();
+          }
+        } else if (sc.hasNext()) {
+          this.invalidInput();
+          sc.next();
+        } else if (toFrom.size() < 4 && !sc.hasNext()) {
+          throw new IllegalStateException("does not end");
+        }
+      }
+
+      if (!gameOver) {
+        this.moveModel(toFrom.get(0),
+                toFrom.get(1),
+                toFrom.get(2),
+                toFrom.get(3));
+      } else {
         break;
       }
-      this.getToFrom(toFrom);
-
-      if (toFrom.size() != 4 || this.anyNegative(toFrom)) {
-        this.invalidMove();
-        continue;
-      }
-
-      this.moveModel(toFrom.get(0),
-              toFrom.get(1),
-              toFrom.get(2),
-              toFrom.get(3));
     }
-    this.gameOver();
+    if (model.isGameOver()) {
+      this.gameOver();
+    }
   }
 
   private void showGame() throws IllegalStateException {
     try {
       view.renderBoard();
-      view.renderMessage("\nScore: " + model.getScore() + "\n");
+      view.renderMessage("Score: " + model.getScore() + "\n");
     } catch (IOException e) {
       throw new IllegalStateException("Illegal States");
     }
@@ -64,7 +92,7 @@ public class MarbleSolitaireControllerImpl implements MarbleSolitaireController 
   private void quit() throws IllegalStateException {
     try {
       view.renderMessage("Game quit!\n");
-      view.renderMessage("State of the game when quit\n");
+      view.renderMessage("State of game when quit:\n");
       this.showGame();
     } catch (IOException e) {
       throw new IllegalStateException("Illegal States");
@@ -79,20 +107,14 @@ public class MarbleSolitaireControllerImpl implements MarbleSolitaireController 
     }
   }
 
-  private void getToFrom(ArrayList<Integer> toFrom) {
-    for ( int i = 0; i < 4; i++) {
-      toFrom.add(sc.nextInt());
+  private void invalidInput() throws IllegalStateException {
+    try {
+      view.renderMessage("Invalid input, Please enter new one\n");
+    } catch (IOException e) {
+      throw new IllegalStateException("Illegal States");
     }
   }
 
-  private boolean anyNegative(ArrayList<Integer> toFrom) {
-    for (int i = 0; i < 4; i++) {
-      if (toFrom.get(i) < 0) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   private void moveModel(int sRow, int sCol, int eRow, int eCol) throws IllegalStateException {
     try {
